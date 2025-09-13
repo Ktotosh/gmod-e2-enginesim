@@ -172,8 +172,8 @@ function calc_FC(RPM, TF){
 function array calc_torque(Throt, CurvePoints:array)
 {
     if (RPM < MinRPM) {
-        soundPlay(5, 0, "vehicles/jetski/jetski_off.wav")
         return array(0)
+        soundPlay(5, 0, "vehicles/jetski/jetski_off.wav")
     }
 
     Idle_torque = 0
