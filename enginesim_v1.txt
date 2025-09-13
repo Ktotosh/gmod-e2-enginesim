@@ -357,7 +357,6 @@ function update(Dt){
     } 
     
     RPM = AngVel * 9.55
-    return RPM, Torque
 }
 
 local DT=curtime()-CrTime
