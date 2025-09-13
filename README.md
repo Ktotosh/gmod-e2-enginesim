@@ -10,5 +10,5 @@ Featuring:
 * Abnormally hard controls for a game!
 * 3 sounds for different RPM's!
 
-Setting this up is not too hard as long as you can edit code and use wiremod, it will require some variable editing at best.
+Setting this up is not too hard as long as you can edit code and use wiremod, it will require some variable editing at best. Do whatever you want with it.
  
