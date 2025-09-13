@@ -2,9 +2,8 @@
 @inputs StarterActive Ignition Throttle Wh1:entity Wh2:entity Clutch GearUp GearDown Brake
 @outputs RPM1 Torque1 FuelRem GearOut BRLight BCLight
 @persist RPM Torque AngVel RevLimit Gear Ratio Broken
-@persist Wh1AngVel Wh2AngVel TotalLoadRatio J_Output Wdiff Throttle_factor Torque_factor
-@persist TurboBoost TurboRPM MaxBoost BoostPress
-@persist BoostPress ManifoldPress
+@persist Wh1AngVel Wh2AngVel TotalLoadRatio J_Output Wdiff 
+@persist TurboBoost TurboRPM MaxBoost BoostPress ManifoldPress
 @strict
 @model models/gibs/airboat_broken_engine.mdl
 runOnTick(1)
@@ -173,8 +172,8 @@ function calc_FC(RPM, TF){
 function array calc_torque(Throt, CurvePoints:array)
 {
     if (RPM < MinRPM) {
-        return array(0)
         soundPlay(5, 0, "vehicles/jetski/jetski_off.wav")
+        return array(0)
     }
 
     Idle_torque = 0
