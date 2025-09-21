@@ -15,38 +15,38 @@ if(first()|dupefinished()){
     
     #Main settings
     
-    TorqueCurve = array(90, 110, 135, 160, 180, 135, 125, 110, 95, 10) #The main torque curve.
-    MaxRPM = 7000 #The max RPM that the engine can ever reach. The actual max RPM that can be reached at neutral is usually lower due to friction
-    IdleRPM = 900
-    MinRPM = 300 #The engine will stall if it falls lower than this
+    TorqueCurve = array(90, 110, 135, 165, 150, 140, 135, 110, 95, 0) #The main torque curve in N*m. If you dont want the engine to blow up set the last value to 0
+    MaxRPM = 6500 #The max RPM that the engine can reach as long as the last value in the curve is 0
+    IdleRPM = 900 #The RPM that the car tries to maintain while throttle is 0
+    MinRPM = 300 #The RPM at which the engine stalls
     
-    FlyMass = 6.4 #Flywheel mass in kg.
+    FlyMass = 6.4 #Flywheel mass in kg
     FlyRadius = 0.15 #Flywheel radius in meters
     Friction = 0.08 #Flywheel friction
     
-    StarterTorque = 3 #Starter torque
+    StarterTorque = 6 #Starter torque in N*m
     StarterCut = 800 #The RPM at which the starter will stop spinning
     
     #Revlimit settings
-    
-    RevLimiter = 1 #Enable rev-limiting. Mostly just for cool sounds, doesnt serve any serious purpose
-    RevLimitM = 1000 #Revlimiter lower threshold
-    RevLimitTo = 7000 #If the RPM is bigger than this the revlmiter will cut the fuel to the engine
+
+    RevLimiter = 0 #Enable rev-limiting. This is a security feature that prevents the engine from going over the redline and exploding
+    RevLimitM = 1000 #Revlimiter lower threshold 
+    RevLimitTo = 6500 #The RPM at which the revlimiter activates
     
     #Turbo settings
     
-    TurboCharger = 1 #Enable turbocharger, can slightly boost the engine but it takes some time to spin up
+    TurboCharger = 0 #Enable turbocharger, can slightly boost the engine but takes some time to spin up
     MaxBoost = 1.5  #Max boost multiplier
     TurboLag = 1 #Turbocharger spin-up time
     MaxTurboRPM = 200000 #Max turbo RPM
     
     #Transmission/Gearbox settings
     
-    GearRatios = array(-3.63,0,3.63,2.1,1.5,1,0.8) #The gear table, note that N is the second gear in the array, R is the first.
+    GearRatios = array(-3.63,0,3.63,2.1,1.5,1,0.8) #The gear table, note that N is the second gear in the array, R is the first
     Differential = 3.7 #The differential that is multiplied by the gear
     Gear = 2 #The default gear on dupe finishing
-    TransStiff = 0.75 #This makes the RPM smoother but limits the engine power
-    BrakePower = 350 #The force that is applied to stop the car
+    TransStiff = 0.75 #This makes the connection between the wheels and the engine less stiff
+    BrakePower = 350 #The force in N*m that is applied to stop the car
     
     #Fuel consumption RPM settings
     
@@ -75,7 +75,7 @@ if(first()|dupefinished()){
     
     Broken=0
     
-    Inertia = 0.5 * FlyMass * (FlyRadius ^ 2)
+    Inertia = FlyMass * (FlyRadius ^ 2)
     CrTime=curtime()
 }
 
@@ -230,11 +230,9 @@ function calc_turbo(Rpm, Throttle, Dt)
     local TurboAccel = (TTurboRPM - TurboRPM) / TurboLag
     TurboRPM = TurboRPM + TurboAccel * Dt
 
-    local BoostPress = MaxBoost * (TurboRPM / MaxTurboRPM)
-
-    local ThrottlePosition = Throttle / 100
+    local BoostPress = MaxBoost * (TurboRPM / MaxTurboRPM) 
         
-    ManifoldPress = lerp(ManifoldPress, BoostPress * ThrottlePosition, 5 * Dt)
+    ManifoldPress = lerp(ManifoldPress, BoostPress * Throttle / 100, 5 * Dt)
 
     local PressDiff = BoostPress - ManifoldPress
     
